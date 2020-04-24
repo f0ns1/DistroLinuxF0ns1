@@ -5,4 +5,4 @@ How to :
 
 
 
-[file-system] ()
+[file-system] !(New-OS/FileSystem:virtualOs.png)
