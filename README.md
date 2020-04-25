@@ -1,8 +1,8 @@
 ## DistroLinuxF0ns1
 Under construction
 
-## How to mount the new FileSystem on Virtual machine:
-
+## How to mount, a new FileSystem on Virtual machine:
+ logic architecture
 
 
 
@@ -79,7 +79,7 @@ create tree directory structure for linux Operative System execution:
 	drwxrwxr-x  14 root root 4.0K Apr 25 17:03 usr
 	drwxr-xr-x   4 root root 4.0K Apr 25 17:08 home
 
-# New virtual file sistem:
+# New virtual file system:
 
 	(lfs chroot) root:/# df -a
 	Filesystem     1K-blocks    Used Available Use% Mounted on
