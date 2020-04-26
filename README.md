@@ -288,10 +288,10 @@ Libraries that we need on directory:
 
 -rw-r--r-- 1 f0ns1 f0ns1 5,0K abr 24 06:03 wget-list
 DistroLinuxF0ns1/wget-list
+download source of binaries:
+wget --input-file=wget-list --continue --directory-prefix=<your directory>
 
-
-
-For recreate the scenary is completly mandatory, follow the next steps:
+For recreate the scenary is completly mandatory, follow (sequencially) the next steps:
 
 	1.Compile binutils
 	2.Compile gcc with dependencies
