@@ -419,7 +419,7 @@ For recreate the scenary is completly mandatory, follow (sequencially) the next 
 	lfs@debian-f0ns1:/mnt/lfs$ readelf -l a.out | grep ': /tools'
       		[Requesting program interpreter: /tools/lib64/ld-linux-x86-64.so.2]
 
-## 2.3 install all packages from scracth (src) on new toolchain:
+## 2.3 install all packages from (src) on new toolchain:
 
 	2.3.1 Libstdc++ from GCC-9.2.0
 	2.3.2 Binutils-2.34 - Pass 2
@@ -563,7 +563,7 @@ For recreate the scenary is completly mandatory, follow (sequencially) the next 
  2.3.4 Tcl-8.6.10
  
 	tar xf tcl8.6.10-src.tar.gz
-	cd tcl8.6.10-src
+	cd tcl8.6.10
 	cd unix
 	./configure --prefix=/tools
 	make
@@ -573,7 +573,7 @@ For recreate the scenary is completly mandatory, follow (sequencially) the next 
 	make install-private-headers
 	ln -sv tclsh8.6 /tools/bin/tclsh
 	cd .././
-	rm -fr tcl8.6.10-src
+	rm -fr tcl8.6.10
 	
  2.3.5 Expect-5.45.4
  	
