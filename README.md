@@ -538,7 +538,7 @@ For recreate the scenary is completly mandatory, follow (sequencially) the next 
 	ln -sv gcc /tools/bin/cc
 	
 	cd ../../
-	rm -fr gcc-9.2.0.tar.xz
+	rm -fr gcc-9.2.0
 
 ## Test executed success:
 
