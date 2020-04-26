@@ -196,20 +196,100 @@ Note that for 32-bit machines, the interpreter name will be /tools/lib/ld-linux.
 Libraries that we need on directory:
 
 	$LFS/home/sources:
-	ls -ltrh | grep gcc   #gcc 
-	-rw-r--r--  1 lfs   lfs    68M Apr 24 18:04 gcc-9.2.0.tar.xz
-	lfs@debian-f0ns1:/mnt/lfs/home/sources$ ls -ltrh | grep mpfr #gcc dependency
-	-rw-r--r--  1 lfs   lfs   1.4M Apr 24 18:04 mpfr-4.0.2.tar.xz
-	lfs@debian-f0ns1:/mnt/lfs/home/sources$ ls -ltrh | grep gmp #gcc dependency
-	-rw-r--r--  1 lfs   lfs   2.0M Apr 24 18:04 gmp-6.2.0.tar.xz
-	lfs@debian-f0ns1:/mnt/lfs/home/sources$ ls -ltrh | grep mpc #gcc dependency
-	-rw-r--r--  1 lfs   lfs   685K Apr 24 18:04 mpc-1.1.0.tar.gz
-	lfs@debian-f0ns1:/mnt/lfs/home/sources$ ls -ltrh | grep linux-5 #linux api headers
-	-rw-r--r--  1 lfs   lfs   106M Apr 24 18:04 linux-5.5.3.tar.xz
-	lfs@debian-f0ns1:/mnt/lfs/home/sources$ ls -ltrh | grep glibc  #glibc 
-	-rw-r--r--  1 lfs   lfs    16M Apr 24 18:04 glibc-2.31.tar.xz
-	ls -ltrh binutils-2.34.tar.xz # linux core utils
-	-rw-r--r-- 1 lfs lfs 21M Apr 24 18:04 binutils-2.34.tar.xz
+	ls -ltrh
+	total 399M
+	-rw-r--r-- 1 f0ns1 f0ns1 1,2M abr 25  2012 autoconf-2.69.tar.xz
+	-rw-r--r-- 1 f0ns1 f0ns1  88K oct  4  2014 sysklogd-1.5.1.tar.gz
+	-rw-r--r-- 1 f0ns1 f0ns1 201K dic 22  2014 iana-etc-2.30.tar.bz2
+	-rw-r--r-- 1 f0ns1 f0ns1 951K feb 16  2015 libtool-2.4.6.tar.xz
+	-rw-r--r-- 1 f0ns1 f0ns1 159K mar  9  2015 intltool-0.51.0.tar.gz
+	-rw-r--r-- 1 f0ns1 f0ns1 1,4M jun 10  2015 inetutils-1.9.4.tar.xz
+	-rw-r--r-- 1 f0ns1 f0ns1 1,2M dic 31  2016 m4-1.4.18.tar.xz
+	-rw-r--r-- 1 f0ns1 f0ns1 1,2M ene  5  2017 gperf-3.1.tar.gz
+	-rw-r--r-- 1 f0ns1 f0ns1 457K ene 15  2017 zlib-1.2.11.tar.xz
+	-rw-r--r-- 1 f0ns1 f0ns1 2,0M mar 20  2017 pkg-config-0.29.2.tar.gz
+	-rw-r--r-- 1 f0ns1 f0ns1 1,4M may 26  2017 flex-2.6.4.tar.gz
+	-rw-r--r-- 1 f0ns1 f0ns1 685K ene 11  2018 mpc-1.1.0.tar.gz
+	-rw-r--r-- 1 f0ns1 f0ns1 618K feb  4  2018 expect5.45.4.tar.gz
+	-rw-r--r-- 1 f0ns1 f0ns1 766K feb  6  2018 patch-2.7.6.tar.xz
+	-rw-r--r-- 1 f0ns1 f0ns1 1,5M mar 11  2018 automake-1.16.1.tar.xz
+	-rw-r--r-- 1 f0ns1 f0ns1 1,1M abr 29  2018 xz-5.2.4.tar.xz
+	-rw-r--r-- 1 f0ns1 f0ns1 884K may 19  2018 procps-ng-3.3.15.tar.xz
+	-rw-r--r-- 1 f0ns1 f0ns1 457K jun 19  2018 attr-2.4.48.tar.gz
+	-rw-r--r-- 1 f0ns1 f0ns1 513K jun 19  2018 acl-2.2.53.tar.gz
+	-rw-r--r-- 1 f0ns1 f0ns1 297K sep 24  2018 psmisc-23.2.tar.xz
+	-rw-r--r-- 1 f0ns1 f0ns1 920K oct 27  2018 gdbm-1.18.1.tar.gz
+	-rw-r--r-- 1 f0ns1 f0ns1 514K nov 28  2018 dejagnu-1.6.2.tar.gz
+	-rw-r--r-- 1 f0ns1 f0ns1 4,0M dic 23  2018 groff-1.22.4.tar.gz
+	-rw-r--r-- 1 f0ns1 f0ns1 757K dic 30  2018 gzip-1.10.tar.xz
+	-rw-r--r-- 1 f0ns1 f0ns1 1,4M ene  1  2019 diffutils-3.7.tar.xz
+	-rw-r--r-- 1 f0ns1 f0ns1 9,7M ene  7  2019 bash-5.0.tar.gz
+	-rw-r--r-- 1 f0ns1 f0ns1 2,9M ene  7  2019 readline-8.0.tar.gz
+	-rw-r--r-- 1 f0ns1 f0ns1 1,4M ene 31  2019 mpfr-4.0.2.tar.xz
+	-rw-r--r-- 1 f0ns1 f0ns1 540K feb  7  2019 kmod-26.tar.xz
+	-rw-r--r-- 1 f0ns1 f0ns1 2,1M feb 23  2019 tar-1.32.tar.xz
+	-rw-r--r-- 1 f0ns1 f0ns1 5,2M mar 11  2019 coreutils-8.31.tar.xz
+	-rw-r--r-- 1 f0ns1 f0ns1 9,0M may 12  2019 gettext-0.20.1.tar.xz
+	-rw-r--r-- 1 f0ns1 f0ns1 339K jun 11  2019 less-551.tar.gz
+	-rw-r--r-- 1 f0ns1 f0ns1 3,0M jun 18  2019 gawk-5.0.1.tar.xz
+	-rw-r--r-- 1 f0ns1 f0ns1  11K jun 30  2019 udev-lfs-20171102.tar.xz
+	-rw-r--r-- 1 f0ns1 f0ns1 6,1M jul  5  2019 grub-2.04.tar.xz
+	-rw-r--r-- 1 f0ns1 f0ns1 792K jul 13  2019 bzip2-1.0.8.tar.gz
+	-rw-r--r-- 1 f0ns1 f0ns1 1,1M jul 31  2019 kbd-2.2.0.tar.xz
+	-rw-r--r-- 1 f0ns1 f0ns1  68M ago 12  2019 gcc-9.2.0.tar.xz
+	-rw-r--r-- 1 f0ns1 f0ns1 1,9M ago 29  2019 findutils-4.7.0.tar.xz
+	-rw-r--r-- 1 f0ns1 f0ns1 8,5M sep 10  2019 openssl-1.1.1d.tar.gz
+	-rw-r--r-- 1 f0ns1 f0ns1 120K sep 11  2019 sysvinit-2.96.tar.xz
+	-rw-r--r-- 1 f0ns1 f0ns1 383K sep 11  2019 tzdata2019c.tar.gz
+	-rw-r--r-- 1 f0ns1 f0ns1 249K sep 24  2019 XML-Parser-2.46.tar.gz
+	-rw-r--r-- 1 f0ns1 f0ns1 4,2M sep 24  2019 texinfo-6.7.tar.xz
+	-rw-r--r-- 1 f0ns1 f0ns1 413K sep 26  2019 expat-2.2.9.tar.xz
+	-rw-r--r-- 1 f0ns1 f0ns1 1,8M oct 23  2019 man-db-2.9.0.tar.xz
+	-rw-r--r-- 1 f0ns1 f0ns1 1,9M oct 26  2019 eudev-3.2.9.tar.gz
+	-rw-r--r-- 1 f0ns1 f0ns1 1,9M nov  5 20:09 zstd-1.4.4.tar.gz
+	-rw-r--r-- 1 f0ns1 f0ns1  12M nov 10 15:14 perl-5.30.1.tar.xz
+	-rw-r--r-- 1 f0ns1 f0ns1 9,7M nov 21 22:39 tcl8.6.10-src.tar.gz
+	-rw-r--r-- 1 f0ns1 f0ns1 8,6M nov 26 23:50 elfutils-0.178.tar.bz2
+	-rw-r--r-- 1 f0ns1 f0ns1  18M dic 18 22:30 Python-3.8.1.tar.xz
+	-rw-r--r-- 1 f0ns1 f0ns1 6,3M dic 18 22:34 python-3.8.1-docs-html.tar.bz2
+	-rw-r--r-- 1 f0ns1 f0ns1 971K ene  1 17:21 libpipeline-1.5.2.tar.gz
+	-rw-r--r-- 1 f0ns1 f0ns1 1,5M ene  2 22:28 grep-3.4.tar.xz
+	-rw-r--r-- 1 f0ns1 f0ns1 7,6M ene  7 18:26 e2fsprogs-1.45.5.tar.gz
+	-rw-r--r-- 1 f0ns1 f0ns1  97K ene 13 20:25 libcap-2.31.tar.xz
+	-rw-r--r-- 1 f0ns1 f0ns1 1,3M ene 15 05:12 sed-4.8.tar.xz
+	-rw-r--r-- 1 f0ns1 f0ns1 2,0M ene 18 16:29 gmp-6.2.0.tar.xz
+	-rw-r--r-- 1 f0ns1 f0ns1 2,3M ene 19 23:24 make-4.3.tar.gz
+	-rw-r--r-- 1 f0ns1 f0ns1 1,5M ene 24 00:02 meson-0.53.1.tar.gz
+	-rw-r--r-- 1 f0ns1 f0ns1 1,6M ene 24 22:43 shadow-4.8.1.tar.xz
+	-rw-r--r-- 1 f0ns1 f0ns1 753K ene 26 18:58 check-0.14.0.tar.gz
+	-rw-r--r-- 1 f0ns1 f0ns1 731K ene 27 14:54 iproute2-5.5.0.tar.xz
+	-rw-r--r-- 1 f0ns1 f0ns1 5,0M ene 31 10:49 util-linux-2.35.1.tar.xz
+	-rw-r--r-- 1 f0ns1 f0ns1  21M feb  1 13:24 binutils-2.34.tar.xz
+	-rw-r--r-- 1 f0ns1 f0ns1  16M feb  1 13:26 glibc-2.31.tar.xz
+	-rw-r--r-- 1 f0ns1 f0ns1 1,7M feb  9 17:53 man-pages-5.05.tar.xz
+	-rw-r--r-- 1 f0ns1 f0ns1 106M feb 11 13:45 linux-5.5.3.tar.xz
+	-rw-r--r-- 1 f0ns1 f0ns1 3,3M feb 12 10:54 ncurses-6.2.tar.gz
+	-rw-r--r-- 1 f0ns1 f0ns1 2,3M feb 13 19:12 bison-3.5.2.tar.xz
+	-rw-r--r-- 1 f0ns1 f0ns1  15M feb 20 17:38 vim-8.2.0190.tar.gz
+	-rw-r--r-- 1 f0ns1 f0ns1 2,5K feb 29 22:30 sysvinit-2.96-consolidated-1.patch
+	-rw-r--r-- 1 f0ns1 f0ns1  13K feb 29 22:30 kbd-2.2.0-backspace-1.patch
+	-rw-r--r-- 1 f0ns1 f0ns1 2,8K feb 29 22:30 glibc-2.31-fhs-1.patch
+	-rw-r--r-- 1 f0ns1 f0ns1 168K feb 29 22:30 coreutils-8.31-i18n-1.patch
+	-rw-r--r-- 1 f0ns1 f0ns1 1,7K feb 29 22:30 bzip2-1.0.8-install_docs-1.patch
+	-rw-r--r-- 1 f0ns1 f0ns1  22K feb 29 22:30 bash-5.0-upstream_fixes-1.patch
+	-rw-r--r-- 1 f0ns1 f0ns1  32K feb 29 22:36 lfs-bootscripts-20191031.tar.xz
+	-rw-r--r-- 1 f0ns1 f0ns1 5,0K abr 24 06:03 wget-list
+	-rw-r--r-- 1 f0ns1 f0ns1 247K abr 24 06:04 bc-2.5.3.tar.gz
+	-rw-r--r-- 1 f0ns1 f0ns1 911K abr 24 06:05 file-5.38.tar.gz
+	-rw-r--r-- 1 f0ns1 f0ns1 1,3M abr 24 06:05 libffi-3.3.tar.gz
+	-rw-r--r-- 1 f0ns1 f0ns1 206K abr 24 06:07 ninja-1.10.0.tar.gz
+
+@ wget List : provided by s4v1t4r
+
+-rw-r--r-- 1 f0ns1 f0ns1 5,0K abr 24 06:03 wget-list
+DistroLinuxF0ns1/wget-list
+
+
 
 For recreate the scenary is completly mandatory, follow the next steps:
 
