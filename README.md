@@ -317,3 +317,23 @@ For recreate the scenary is completly mandatory, follow the next steps:
 	 make install
 	 
 
+
+## Test executed success:
+
+	lfs@debian-f0ns1:/mnt/lfs$ source ~/.bash_profile 
+	
+	lfs@debian-f0ns1:/mnt/lfs$ cat test.c 
+	#include <stdio.h>
+	int main() {
+  	 // printf() displays the string inside quotation
+  	 printf("Hi, guys ! toolchain compilationo ....");
+  	 return 0;
+	}
+	lfs@debian-f0ns1:/mnt/lfs$ $LFS_TGT-gcc test.c
+	 
+	lfs@debian-f0ns1:/mnt/lfs$ ./a.out 
+	Hi, guys ! toolchain compilationo ....
+	
+	lfs@debian-f0ns1:/mnt/lfs$ readelf -l a.out | grep ': /tools'
+      		[Requesting program interpreter: /tools/lib64/ld-linux-x86-64.so.2]
+
