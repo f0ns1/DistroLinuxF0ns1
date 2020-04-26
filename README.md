@@ -93,3 +93,227 @@ create tree directory structure for linux Operative System execution:
 
 
 
+# Grub new Distro : DistroLinuxFonsi
+
+![ grub ](New-OS/grub.png)
+
+
+# installation process of toolchain:
+
+
+![ toolchain architecture ](New-OS/captura_toolchain.png)
+
+## Set Environment:
+
+	mkdir -v $LFS/tools
+	ln -sv $LFS/tools /
+	
+## Create lfs user 
+	
+	groupadd lfs
+	useradd -s /bin/bash -g lfs -m -k /dev/null lfs
+	passwd lfs
+	chown -v lfs $LFS/tools
+	chown -v lfs $LFS/sources
+	su - lfs
+	
+## configure environment for user 
+	
+	cat > ~/.bash_profile << "EOF"
+	exec env -i HOME=$HOME TERM=$TERM PS1='\u:\w\$ ' /bin/bash
+	EOF
+	
+	cat > ~/.bashrc << "EOF"
+	set +h
+	umask 022
+	LFS=/mnt/lfs
+	LC_ALL=POSIX
+	LFS_TGT=$(uname -m)-lfs-linux-gnu
+	PATH=/tools/bin:/bin:/usr/bin
+	export LFS LC_ALL LFS_TGT PATH
+	EOF
+	
+	source ~/.bash_profile
+
+## Construct temporary system 
+
+
+
+## Create new toolChain:
+
+You mus crete a new specific user on your OS, the selected name could be lfs.
+
+configuration user environment  vars, on .bashrc of /hom/lfs directory :
+
+
+	set +h
+	umask 002
+	LFS=/mnt/lfs
+	LC_ALL=POSIX
+	LFS_TGT=$(uname -m)-lfs-linux-gnu
+	PATH=/tools/bin:/bin:/usr/bin
+	export LFS LC_ALL LFS_TGT PATH
+
+
+ The build instructions assume that the Host System Requirements, including symbolic links, have been set properly:
+
+    bash is the shell in use.
+
+    sh is a symbolic link to bash.
+
+    /usr/bin/awk is a symbolic link to gawk.
+
+    /usr/bin/yacc is a symbolic link to bison or a small script that executes bison.
+
+	lfs@debian-f0ns1:/tools/lib$ ls  -ltrh /usr/bin/bash
+	-rwxr-xr-x 1 root root 1.2M Apr 18  2019 /usr/bin/bash
+	lfs@debian-f0ns1:/tools/lib$ ls  -ltrh /usr/bin/sh  
+	lrwxrwxrwx 1 root root 4 Apr 24 03:01 /usr/bin/sh -> bash
+	lfs@debian-f0ns1:/tools/lib$ ls  -ltrh /usr/bin/awk 
+	lrwxrwxrwx 1 root root 4 Apr 24 05:47 /usr/bin/awk -> gawk
+	lfs@debian-f0ns1:/tools/lib$ ls  -ltrh /usr/bin/yacc 
+	lrwxrwxrwx 1 root root 5 Apr 24 05:46 /usr/bin/yacc -> bison
+
+
+## Toolchain: [basic gcc] self-compile and self-linked libraries
+
+When we finish the core toolchain compilation, it be able to make that simple test:
+
+	echo 'int main(){}' > dummy.c
+	$LFS_TGT-gcc dummy.c
+	readelf -l a.out | grep ': /tools'
+
+If everything is working correctly, there should be no errors, and the output of the last command will be of the form:
+
+[Requesting program interpreter: /tools/lib64/ld-linux-x86-64.so.2]
+
+Note that for 32-bit machines, the interpreter name will be /tools/lib/ld-linux.so.2.
+
+	rm -v dummy.c a.out
+
+Libraries that we need on directory:
+
+	$LFS/home/sources:
+	ls -ltrh | grep gcc   #gcc 
+	-rw-r--r--  1 lfs   lfs    68M Apr 24 18:04 gcc-9.2.0.tar.xz
+	lfs@debian-f0ns1:/mnt/lfs/home/sources$ ls -ltrh | grep mpfr #gcc dependency
+	-rw-r--r--  1 lfs   lfs   1.4M Apr 24 18:04 mpfr-4.0.2.tar.xz
+	lfs@debian-f0ns1:/mnt/lfs/home/sources$ ls -ltrh | grep gmp #gcc dependency
+	-rw-r--r--  1 lfs   lfs   2.0M Apr 24 18:04 gmp-6.2.0.tar.xz
+	lfs@debian-f0ns1:/mnt/lfs/home/sources$ ls -ltrh | grep mpc #gcc dependency
+	-rw-r--r--  1 lfs   lfs   685K Apr 24 18:04 mpc-1.1.0.tar.gz
+	lfs@debian-f0ns1:/mnt/lfs/home/sources$ ls -ltrh | grep linux-5 #linux api headers
+	-rw-r--r--  1 lfs   lfs   106M Apr 24 18:04 linux-5.5.3.tar.xz
+	lfs@debian-f0ns1:/mnt/lfs/home/sources$ ls -ltrh | grep glibc  #glibc 
+	-rw-r--r--  1 lfs   lfs    16M Apr 24 18:04 glibc-2.31.tar.xz
+	ls -ltrh binutils-2.34.tar.xz # linux core utils
+	-rw-r--r-- 1 lfs lfs 21M Apr 24 18:04 binutils-2.34.tar.xz
+
+For recreate the scenary is completly mandatory, follow the next steps:
+
+	1.Compile binutils
+	2.Compile gcc with dependencies
+	3.Compile Linux API
+	4.Compile glibc 
+
+1.Compile bin utils:
+
+	tar xf linux-5.5.3.tar.xz
+	cd linux-5.5.3
+	mkdir -v build
+	cd       build
+	../configure --prefix=/tools            \
+             --with-sysroot=$LFS        \
+             --with-lib-path=/tools/lib \
+             --target=$LFS_TGT          \
+             --disable-nls              \
+             --disable-werror
+	make
+	case $(uname -m) in
+  		x86_64) mkdir -v /tools/lib && ln -sv lib /tools/lib64 ;;
+	esac
+	make install
+	cd ../../
+	rm -fr linux-5.5.3.tar
+	
+2.Compile Gcc with dependencies:
+
+	tar xf gcc-9.2.0.tar.xz
+	cd gcc-9.2.0
+	tar -xf ../mpfr-4.0.2.tar.xz
+	mv -v mpfr-4.0.2 mpfr
+	tar -xf ../gmp-6.2.0.tar.xz
+	mv -v gmp-6.2.0 gmp
+	tar -xf ../mpc-1.1.0.tar.gz
+	mv -v mpc-1.1.0 mpc
+	for file in gcc/config/{linux,i386/linux{,64}}.h
+	do
+  		cp -uv $file{,.orig}
+		sed -e 's@/lib\(64\)\?\(32\)\?/ld@/tools&@g' \
+		      -e 's@/usr@/tools@g' $file.orig > $file
+		echo '
+		#undef STANDARD_STARTFILE_PREFIX_1
+		#undef STANDARD_STARTFILE_PREFIX_2
+		#define STANDARD_STARTFILE_PREFIX_1 "/tools/lib/"
+		#define STANDARD_STARTFILE_PREFIX_2 ""' >> $file
+		touch $file.orig
+	done
+	case $(uname -m) in
+  		x86_64)
+    		sed -e '/m64=/s/lib64/lib/' \
+        		-i.orig gcc/config/i386/t-linux64;;
+	esac
+	mkdir -v build
+	cd       build
+	../configure                                       \
+	    --target=$LFS_TGT                              \
+	    --prefix=/tools                                \
+	    --with-glibc-version=2.11                      \
+	    --with-sysroot=$LFS                            \
+	    --with-newlib                                  \
+	    --without-headers                              \
+	    --with-local-prefix=/tools                     \
+	    --with-native-system-header-dir=/tools/include \
+	    --disable-nls                                  \
+	    --disable-shared                               \
+	    --disable-multilib                             \
+	    --disable-decimal-float                        \
+	    --disable-threads                              \
+	    --disable-libatomic                            \
+	    --disable-libgomp                              \
+	    --disable-libquadmath                          \
+	    --disable-libssp                               \
+	    --disable-libvtv                               \
+	    --disable-libstdcxx                            \
+	    --enable-languages=c,c++
+	make
+	make install
+	cd ../../
+	rm -fr gcc-9.2.0
+
+3.Compile Linux API:
+	
+	tar xf linux-5.5.3.tar.xz
+	cd linux-5.5.3
+	make mrproper
+	make headers
+	cp -rv usr/include/* /tools/include
+	cd ../
+	rm -fr linux-5.5.3
+	
+4.Compile Glibc:
+
+	tar xf glibc-2.31.tar.xz
+	cd glibc-2.31
+	mkdir -v build
+	cd       build
+	../configure                             \
+	      --prefix=/tools                    \
+	      --host=$LFS_TGT                    \
+	      --build=$(../scripts/config.guess) \
+	      --enable-kernel=3.2                \
+	      --with-headers=/tools/include
+	 make
+	 make install
+	 
+
