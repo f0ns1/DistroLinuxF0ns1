@@ -1,7 +1,7 @@
 ## DistroLinuxF0ns1
 Under construction
 
-## How to mount, a new FileSystem on Virtual machine:
+## How to mount new FileSystem on Virtual machine:
  logic architecture
 
 
@@ -98,17 +98,19 @@ create tree directory structure for linux Operative System execution:
 ![ grub ](New-OS/grub.png)
 
 
-# installation process of toolchain:
+# Create Your own distro:
+
+# 1. installation process of toolchain:
 
 
 ![ toolchain architecture ](New-OS/captura_toolchain.png)
 
-## Set Environment:
+## 1.1 Set Environment:
 
 	mkdir -v $LFS/tools
 	ln -sv $LFS/tools /
 	
-## Create lfs user 
+## 1.2 Create lfs user 
 	
 	groupadd lfs
 	useradd -s /bin/bash -g lfs -m -k /dev/null lfs
@@ -117,7 +119,7 @@ create tree directory structure for linux Operative System execution:
 	chown -v lfs $LFS/sources
 	su - lfs
 	
-## configure environment for user 
+## 1.3 configure environment for user 
 	
 	cat > ~/.bash_profile << "EOF"
 	exec env -i HOME=$HOME TERM=$TERM PS1='\u:\w\$ ' /bin/bash
@@ -135,11 +137,11 @@ create tree directory structure for linux Operative System execution:
 	
 	source ~/.bash_profile
 
-## Construct temporary system 
+## 2.0 Construct temporary system 
 
 
 
-## Create new toolChain:
+## 2.1 Create new toolChain:
 
 You mus crete a new specific user on your OS, the selected name could be lfs.
 
@@ -175,7 +177,7 @@ configuration user environment  vars, on .bashrc of /hom/lfs directory :
 	lrwxrwxrwx 1 root root 5 Apr 24 05:46 /usr/bin/yacc -> bison
 
 
-## Toolchain: [basic gcc] self-compile and self-linked libraries
+## 2.2 Toolchain: [basic gcc] self-compile and self-linked libraries
 
 When we finish the core toolchain compilation, it be able to make that simple test:
 
@@ -216,7 +218,7 @@ For recreate the scenary is completly mandatory, follow the next steps:
 	3.Compile Linux API
 	4.Compile glibc 
 
-1.Compile bin utils:
+2.2.1.Compile bin utils:
 
 	tar xf linux-5.5.3.tar.xz
 	cd linux-5.5.3
@@ -236,7 +238,7 @@ For recreate the scenary is completly mandatory, follow the next steps:
 	cd ../../
 	rm -fr linux-5.5.3.tar
 	
-2.Compile Gcc with dependencies:
+2.2.2 Compile Gcc with dependencies:
 
 	tar xf gcc-9.2.0.tar.xz
 	cd gcc-9.2.0
@@ -291,7 +293,7 @@ For recreate the scenary is completly mandatory, follow the next steps:
 	cd ../../
 	rm -fr gcc-9.2.0
 
-3.Compile Linux API:
+2.2.3 Compile Linux API:
 	
 	tar xf linux-5.5.3.tar.xz
 	cd linux-5.5.3
@@ -301,7 +303,7 @@ For recreate the scenary is completly mandatory, follow the next steps:
 	cd ../
 	rm -fr linux-5.5.3
 	
-4.Compile Glibc:
+2.2.4 Compile Glibc:
 
 	tar xf glibc-2.31.tar.xz
 	cd glibc-2.31
@@ -337,3 +339,170 @@ For recreate the scenary is completly mandatory, follow the next steps:
 	lfs@debian-f0ns1:/mnt/lfs$ readelf -l a.out | grep ': /tools'
       		[Requesting program interpreter: /tools/lib64/ld-linux-x86-64.so.2]
 
+## 2.3 install all packages from scracth (src) on new toolchain:
+
+	2.3.1 Libstdc++ from GCC-9.2.0
+	2.3.2 Binutils-2.34 - Pass 2
+	2.3.3 GCC-9.2.0 - Pass 2
+	2.3.4 Tcl-8.6.10
+	2.3.5 Expect-5.45.4
+	2.3.6 DejaGNU-1.6.2
+	2.3.7 M4-1.4.18
+	2.3.8 Ncurses-6.2
+	2.3.9 Bash-5.0
+	2.3.10 Bison-3.5.2
+	2.3.11 Bzip2-1.0.8
+	2.3.12 Coreutils-8.31
+	2.3.13 Diffutils-3.7
+	2.3.14 File-5.38
+	2.3.15 Findutils-4.7.0
+	2.3.16 Gawk-5.0.1
+	2.3.17 Gettext-0.20.1
+	2.3.18 Grep-3.4
+	2.3.19 Gzip-1.10
+	2.3.20 Make-4.3
+	2.3.21 Patch-2.7.6
+	2.3.22 Perl-5.30.1
+	2.3.23 Python-3.8.1
+	2.3.24 Sed-4.8
+	2.3.25 Tar-1.32
+	2.3.26 Texinfo-6.7
+	2.3.27 Xz-5.2.4 
+
+
+## 2.3.1 Libstdc++ from GCC-9.2.0
+	
+	ttar xf gcc-9.2.0.tar.xz
+	cd gcc-9.2.0
+	mkdir -v build
+	cd       build
+	../libstdc++-v3/configure           \
+    	--host=$LFS_TGT                 \
+    	--prefix=/tools                 \
+    	--disable-multilib              \
+    	--disable-nls                   \
+    	--disable-libstdcxx-threads     \
+    	--disable-libstdcxx-pch         \
+    	--with-gxx-include-dir=/tools/$LFS_TGT/include/c++/9.2.0
+    	make
+    	make install
+	cd ../../
+	rm gcc-9.2.0
+	
+## 2.3.2 Binutils-2.34 - Pass 2
+
+	tar xf binutils-2.34
+	cd binutils-2.34
+	mkdir -v build
+	cd  build
+	CC=$LFS_TGT-gcc                \
+	AR=$LFS_TGT-ar                 \
+	RANLIB=$LFS_TGT-ranlib         \
+	../configure                   \
+	    --prefix=/tools            \
+	    --disable-nls              \
+	    --disable-werror           \
+	    --with-lib-path=/tools/lib \
+	    --with-sysroot
+	make
+	make install
+	make -C ld clean
+	make -C ld LIB_PATH=/usr/lib:/lib
+	cp -v ld/ld-new /tools/bin
+	cd ../../
+	rm binutils-2.34
+	
+## 2.3.3 GCC-9.2.0 - Pass 2
+
+	ttar xf gcc-9.2.0.tar.xz
+	cd gcc-9.2.0
+	
+	cat gcc/limitx.h gcc/glimits.h gcc/limity.h > \
+  `	dirname $($LFS_TGT-gcc -print-libgcc-file-name)`/include-fixed/limits.h
+	
+	for file in gcc/config/{linux,i386/linux{,64}}.h
+	do
+	  cp -uv $file{,.orig}
+	  sed -e 's@/lib\(64\)\?\(32\)\?/ld@/tools&@g' \
+	      -e 's@/usr@/tools@g' $file.orig > $file
+	echo '
+	#undef STANDARD_STARTFILE_PREFIX_1
+	#undef STANDARD_STARTFILE_PREFIX_2
+	#define STANDARD_STARTFILE_PREFIX_1 "/tools/lib/"
+	#define STANDARD_STARTFILE_PREFIX_2 ""' >> $file
+	  touch $file.orig
+	done
+	
+	case $(uname -m) in
+	  x86_64)
+	    sed -e '/m64=/s/lib64/lib/' \
+		-i.orig gcc/config/i386/t-linux64
+	  ;;
+	esac
+	
+	tar -xf ../mpfr-4.0.2.tar.xz
+	mv -v mpfr-4.0.2 mpfr
+	tar -xf ../gmp-6.2.0.tar.xz
+	mv -v gmp-6.2.0 gmp
+	tar -xf ../mpc-1.1.0.tar.gz
+	mv -v mpc-1.1.0 mpc
+	
+	sed -e '1161 s|^|//|' \
+	    -i libsanitizer/sanitizer_common/sanitizer_platform_limits_posix.cc
+	
+	mkdir -v build
+	cd       build
+	
+	make
+	make install
+	ln -sv gcc /tools/bin/cc
+	
+	cd ../../
+	rm -fr gcc-9.2.0.tar.xz
+
+## Test executed success:
+
+	lfs@debian-f0ns1:/mnt/lfs$ source ~/.bash_profile 
+	
+	lfs@debian-f0ns1:/mnt/lfs$ cat test.c 
+	#include <stdio.h>
+	int main() {
+  	 // printf() displays the string inside quotation
+  	 printf("Hi, guys ! toolchain compilationo ....");
+  	 return 0;
+	}
+	lfs@debian-f0ns1:/mnt/lfs$ cc test.c
+	 
+	lfs@debian-f0ns1:/mnt/lfs$ ./a.out 
+	Hi, guys ! toolchain compilationo ....
+	
+	lfs@debian-f0ns1:/mnt/lfs$ readelf -l a.out | grep ': /tools'
+      		[Requesting program interpreter: /tools/lib64/ld-linux-x86-64.so.2]
+	
+
+## 2.3.4 Tcl-8.6.10
+
+	
+## 2.3.5 Expect-5.45.4
+## 2.3.6 DejaGNU-1.6.2
+## 2.3.7 M4-1.4.18
+## 2.3.8 Ncurses-6.2
+## 2.3.9 Bash-5.0
+## 2.3.10 Bison-3.5.2
+## 2.3.11 Bzip2-1.0.8
+## 2.3.12 Coreutils-8.31
+## 2.3.13 Diffutils-3.7
+## 2.3.14 File-5.38
+## 2.3.15 Findutils-4.7.0
+## 2.3.16 Gawk-5.0.1
+## 2.3.17 Gettext-0.20.1
+## 2.3.18 Grep-3.4
+## 2.3.19 Gzip-1.10
+## 2.3.20 Make-4.3
+## 2.3.21 Patch-2.7.6
+## 2.3.22 Perl-5.30.1
+## 2.3.23 Python-3.8.1
+## 2.3.24 Sed-4.8
+## 2.3.25 Tar-1.32
+## 2.3.26 Texinfo-6.7
+## 2.3.27 Xz-5.2.4 
