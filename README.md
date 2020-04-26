@@ -450,7 +450,7 @@ For recreate the scenary is completly mandatory, follow (sequencially) the next 
 	2.3.27 Xz-5.2.4 
 
 
-## 2.3.1 Libstdc++ from GCC-9.2.0
+ 2.3.1 Libstdc++ from GCC-9.2.0
 	
 	ttar xf gcc-9.2.0.tar.xz
 	cd gcc-9.2.0
@@ -469,7 +469,7 @@ For recreate the scenary is completly mandatory, follow (sequencially) the next 
 	cd ../../
 	rm gcc-9.2.0
 	
-## 2.3.2 Binutils-2.34 - Pass 2
+ 2.3.2 Binutils-2.34 - Pass 2
 
 	tar xf binutils-2.34
 	cd binutils-2.34
@@ -492,7 +492,7 @@ For recreate the scenary is completly mandatory, follow (sequencially) the next 
 	cd ../../
 	rm binutils-2.34
 	
-## 2.3.3 GCC-9.2.0 - Pass 2
+ 2.3.3 GCC-9.2.0 - Pass 2
 
 	ttar xf gcc-9.2.0.tar.xz
 	cd gcc-9.2.0
@@ -560,29 +560,55 @@ For recreate the scenary is completly mandatory, follow (sequencially) the next 
       		[Requesting program interpreter: /tools/lib64/ld-linux-x86-64.so.2]
 	
 
-## 2.3.4 Tcl-8.6.10
-
+ 2.3.4 Tcl-8.6.10
+ 
+	tar xf tcl8.6.10-src.tar.gz
+	cd tcl8.6.10-src
+	cd unix
+	./configure --prefix=/tools
+	make
+	TZ=UTC make test
+	make install
+	chmod -v u+w /tools/lib/libtcl8.6.so
+	make install-private-headers
+	ln -sv tclsh8.6 /tools/bin/tclsh
+	cd .././
+	rm -fr tcl8.6.10-src
 	
-## 2.3.5 Expect-5.45.4
-## 2.3.6 DejaGNU-1.6.2
-## 2.3.7 M4-1.4.18
-## 2.3.8 Ncurses-6.2
-## 2.3.9 Bash-5.0
-## 2.3.10 Bison-3.5.2
-## 2.3.11 Bzip2-1.0.8
-## 2.3.12 Coreutils-8.31
-## 2.3.13 Diffutils-3.7
-## 2.3.14 File-5.38
-## 2.3.15 Findutils-4.7.0
-## 2.3.16 Gawk-5.0.1
-## 2.3.17 Gettext-0.20.1
-## 2.3.18 Grep-3.4
-## 2.3.19 Gzip-1.10
-## 2.3.20 Make-4.3
-## 2.3.21 Patch-2.7.6
-## 2.3.22 Perl-5.30.1
-## 2.3.23 Python-3.8.1
-## 2.3.24 Sed-4.8
-## 2.3.25 Tar-1.32
-## 2.3.26 Texinfo-6.7
-## 2.3.27 Xz-5.2.4 
+ 2.3.5 Expect-5.45.4
+ 	
+	tr xf expect5.45.4.tar.gz
+	cd expect5.45.4
+ 	cp -v configure{,.orig}
+	sed 's:/usr/local/bin:/bin:' configure.orig > configure
+	./configure --prefix=/tools       \
+            --with-tcl=/tools/lib \
+            --with-tclinclude=/tools/include
+	make
+	make test
+	make SCRIPTS="" install
+	cd ../
+	rm -fr expect5.45.4
+	
+ 2.3.6 DejaGNU-1.6.2
+ 2.3.7 M4-1.4.18
+ 2.3.8 Ncurses-6.2
+ 2.3.9 Bash-5.0
+ 2.3.10 Bison-3.5.2
+ 2.3.11 Bzip2-1.0.8
+ 2.3.12 Coreutils-8.31
+ 2.3.13 Diffutils-3.7
+ 2.3.14 File-5.38
+ 2.3.15 Findutils-4.7.0
+ 2.3.16 Gawk-5.0.1
+ 2.3.17 Gettext-0.20.1
+ 2.3.18 Grep-3.4
+ 2.3.19 Gzip-1.10
+ 2.3.20 Make-4.3
+ 2.3.21 Patch-2.7.6
+ 2.3.22 Perl-5.30.1
+ 2.3.23 Python-3.8.1
+ 2.3.24 Sed-4.8
+ 2.3.25 Tar-1.32
+ 2.3.26 Texinfo-6.7
+ 2.3.27 Xz-5.2.4 
