@@ -591,12 +591,86 @@ For recreate the scenary is completly mandatory, follow (sequencially) the next 
 	rm -fr expect5.45.4
 	
  2.3.6 DejaGNU-1.6.2
+ 
+ 	tar xf dejagnu-1.6.2.tar.gz
+ 	cd dejagnu-1.6.2
+	./configure --prefix=/tools
+	make install
+	make check
+	cd ../
+	rm -fr dejagnu-1.6.2
+	
  2.3.7 M4-1.4.18
+ 
+ 	tar xf m4-1.4.18.tar.xz
+	cd m4-1.4.18
+	sed -i 's/IO_ftrylockfile/IO_EOF_SEEN/' lib/*.c
+	echo "#define _IO_IN_BACKUP 0x100" >> lib/stdio-impl.h
+	./configure --prefix=/tools
+	make
+	make check
+	make install
+	cd ../
+	rm -fr m4-1.4.18
+	
  2.3.8 Ncurses-6.2
+ 
+ 	tar xf ncurses-6.2.tar.gz
+	cd ncurses-6.2
+	sed -i s/mawk// configure
+	./configure --prefix=/tools \
+            --with-shared   \
+            --without-debug \
+            --without-ada   \
+            --enable-widec  \
+            --enable-overwrite
+	make
+	make install
+	ln -s libncursesw.so /tools/lib/libncurses.so
+ 	cd ../
+	rm -fr ncurses-6.2
+	
  2.3.9 Bash-5.0
+ 
+ 	tar xf bash-5.0.tar.gz
+	cd bash-5.0
+ 	./configure --prefix=/tools --without-bash-malloc
+	make
+	make tests
+	make install
+	ln -sv bash /tools/bin/sh
+	cd ../
+	rm -fr bash-5.0
+	
  2.3.10 Bison-3.5.2
+ 
+ 	tar xf bison-3.5.2.tar.xz
+	cd bison-3.5.2
+	./configure --prefix=/tools
+	make
+	make check
+	make install
+	cd ../
+	rm -fr bison-3.5.2
+ 	
  2.3.11 Bzip2-1.0.8
+ 	
+	tar xf bzip2-1.0.8.tar.gz
+	cd bzip2-1.0.8
+ 	make -f Makefile-libbz2_so
+	make clean
+	make
+	make PREFIX=/tools install
+	cp -v bzip2-shared /tools/bin/bzip2
+	cp -av libbz2.so* /tools/lib
+	ln -sv libbz2.so.1.0 /tools/lib/libbz2.so
+	cd ../
+	rm -fr bzip2-1.0.8
+	
  2.3.12 Coreutils-8.31
+ 
+ 	./configure --prefix=/tools --enable-install-program=hostname
+	
  2.3.13 Diffutils-3.7
  2.3.14 File-5.38
  2.3.15 Findutils-4.7.0
