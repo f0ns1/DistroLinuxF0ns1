@@ -93,3 +93,6 @@ create tree directory structure for linux Operative System execution:
 
 
 
+# Grub new Distro : DistroLinuxFonsi
+
+![ grub ](New-OS/grub.png)
