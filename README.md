@@ -98,7 +98,45 @@ create tree directory structure for linux Operative System execution:
 ![ grub ](New-OS/grub.png)
 
 
-# installation process:
+# installation process of toolchain:
+
+
+![ toolchain architecture ](New-OS/captura_toolchain.png)
+
+## Set Environment:
+
+	mkdir -v $LFS/tools
+	ln -sv $LFS/tools /
+	
+## Create lfs user 
+	
+	groupadd lfs
+	useradd -s /bin/bash -g lfs -m -k /dev/null lfs
+	passwd lfs
+	chown -v lfs $LFS/tools
+	chown -v lfs $LFS/sources
+	su - lfs
+	
+## configure environment for user 
+	
+	cat > ~/.bash_profile << "EOF"
+	exec env -i HOME=$HOME TERM=$TERM PS1='\u:\w\$ ' /bin/bash
+	EOF
+	
+	cat > ~/.bashrc << "EOF"
+	set +h
+	umask 022
+	LFS=/mnt/lfs
+	LC_ALL=POSIX
+	LFS_TGT=$(uname -m)-lfs-linux-gnu
+	PATH=/tools/bin:/bin:/usr/bin
+	export LFS LC_ALL LFS_TGT PATH
+	EOF
+	
+	source ~/.bash_profile
+
+## Construct temporary system 
+
 
 
 ## Create new toolChain:
