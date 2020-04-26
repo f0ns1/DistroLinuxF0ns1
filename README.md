@@ -572,7 +572,7 @@ For recreate the scenary is completly mandatory, follow (sequencially) the next 
 	chmod -v u+w /tools/lib/libtcl8.6.so
 	make install-private-headers
 	ln -sv tclsh8.6 /tools/bin/tclsh
-	cd .././
+	cd ../../
 	rm -fr tcl8.6.10
 	
  2.3.5 Expect-5.45.4
@@ -670,13 +670,48 @@ For recreate the scenary is completly mandatory, follow (sequencially) the next 
  2.3.12 Coreutils-8.31
  
  	./configure --prefix=/tools --enable-install-program=hostname
+	make RUN_EXPENSIVE_TESTS=yes check
+	make install
 	
  2.3.13 Diffutils-3.7
+ 
+ 	./configure --prefix=/tools
+	make
+	make check
+	make install
+	
  2.3.14 File-5.38
+ 
+ 	./configure --prefix=/tools
+	make
+	make check
+	make install
+	
  2.3.15 Findutils-4.7.0
+ 
+ 	./configure --prefix=/tools
+	make
+	make check
+	make install
+	
  2.3.16 Gawk-5.0.1
+ 
+ 	./configure --prefix=/tools
+	make
+	make check
+	make install
+	
  2.3.17 Gettext-0.20.1
+ 
+ 	./configure --disable-shared
+	make
+	cp -v gettext-tools/src/{msgfmt,msgmerge,xgettext} /tools/bin
+	
  2.3.18 Grep-3.4
+ 
+ 	./configure --prefix=/tools
+	make
+	
  2.3.19 Gzip-1.10
  2.3.20 Make-4.3
  2.3.21 Patch-2.7.6
