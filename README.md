@@ -737,6 +737,8 @@ For recreate the scenary is completly mandatory, follow (sequencially) the next 
 	cd grep-3.4
  	./configure --prefix=/tools
 	make
+	make check
+	make install
 	cd ../
 	rm -fr grep-3.4
 	
