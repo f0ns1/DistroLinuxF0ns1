@@ -668,56 +668,147 @@ For recreate the scenary is completly mandatory, follow (sequencially) the next 
 	rm -fr bzip2-1.0.8
 	
  2.3.12 Coreutils-8.31
- 
+ 	
+	tar xf coreutils-8.31.tar.gz
+	cd coreutils-8.31
  	./configure --prefix=/tools --enable-install-program=hostname
 	make RUN_EXPENSIVE_TESTS=yes check
 	make install
+	cd ../
+	rm -fr coreutils-8.31
 	
  2.3.13 Diffutils-3.7
- 
+ 	
+	tar xf diffutils-3.7.tar.xz
+	cd diffutils-3.7
  	./configure --prefix=/tools
 	make
 	make check
 	make install
+	cd ../
+	rm -fr diffutils-3.7
 	
  2.3.14 File-5.38
  
+ 	tar xf file-5.38.tar.gz
+	cd file-5.38
  	./configure --prefix=/tools
 	make
 	make check
 	make install
+	cd ../
+	rm -fr file-5.38
 	
  2.3.15 Findutils-4.7.0
  
+ 	tar xf findutils-4.7.0.tar.xz
+	cd findutils-4.7.0
  	./configure --prefix=/tools
 	make
 	make check
 	make install
+	cd ../
+	rm -fr findutils-4.7.0
 	
  2.3.16 Gawk-5.0.1
  
+ 	tar xf gawk-5.0.1.tar.xz
+	cd gawk-5.0.1
  	./configure --prefix=/tools
 	make
 	make check
 	make install
+	cd ../
+	rm -fr gawk-5.0.1
 	
  2.3.17 Gettext-0.20.1
- 
+ 	
+	tar xf gettext-0.20.1.tar.xz
+	cd gettext-0.20.1
  	./configure --disable-shared
 	make
 	cp -v gettext-tools/src/{msgfmt,msgmerge,xgettext} /tools/bin
+	cd ../
+	rm -fr gettext-0.20.1
 	
  2.3.18 Grep-3.4
  
+ 	tar xf grep-3.4.tar.xz
+	cd grep-3.4
  	./configure --prefix=/tools
 	make
+	cd ../
+	rm -fr grep-3.4
 	
  2.3.19 Gzip-1.10
+ 
+ 	tar xf 
+	cd 
+	
+	cd ../
+	rm -fr 
+	
  2.3.20 Make-4.3
+ 
+ 	tar xf 
+	cd 
+	
+	cd ../
+	rm -fr 
+ 
  2.3.21 Patch-2.7.6
+ 
+ 	tar xf 
+	cd 
+	
+	cd ../
+	rm -fr 
+	
  2.3.22 Perl-5.30.1
+ 
+ 	tar xf 
+	cd 
+	
+	cd ../
+	rm -fr 
+	
  2.3.23 Python-3.8.1
+ 
+ 	tar xf 
+	cd 
+	
+	cd ../
+	rm -fr 
+	
  2.3.24 Sed-4.8
+ 
+ 	tar xf 
+	cd 
+	
+	cd ../
+	rm -fr 
+	
  2.3.25 Tar-1.32
+ 
+ 	tar xf 
+	cd 
+	
+	cd ../
+	rm -fr 
+	
  2.3.26 Texinfo-6.7
- 2.3.27 Xz-5.2.4 
+ 
+ 	tar xf 
+	cd 
+	
+	cd ../
+	rm -fr 
+	
+ 2.3.27 Xz-5.2.4
+ 
+ 	tar xf 
+	cd 
+	
+	cd ../
+	rm -fr 
+
