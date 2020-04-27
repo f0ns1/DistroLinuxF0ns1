@@ -762,7 +762,7 @@ For recreate the scenary is completly mandatory, follow (sequencially) the next 
 	make check
 	make install
 	cd ../
-	rm -fr 
+	rm -fr tar xf make-4.3
  
  2.3.21 Patch-2.7.6
  
