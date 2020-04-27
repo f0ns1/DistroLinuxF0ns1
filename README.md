@@ -742,73 +742,101 @@ For recreate the scenary is completly mandatory, follow (sequencially) the next 
 	
  2.3.19 Gzip-1.10
  
- 	tar xf 
-	cd 
-	
+ 	tar xf gzip-1.10.tar.xz
+	cd gzip-1.10
+	./configure --prefix=/tools
+	make
+	make check
+	make install
 	cd ../
-	rm -fr 
+	rm -fr gzip-1.10
 	
  2.3.20 Make-4.3
  
- 	tar xf 
-	cd 
-	
+ 	tar xf make-4.3.tar.gz
+	cd make-4.3
+	./configure --prefix=/tools --without-guile
+	make
+	make check
+	make install
 	cd ../
 	rm -fr 
  
  2.3.21 Patch-2.7.6
  
- 	tar xf 
-	cd 
-	
+ 	tar xf patch-2.7.6.tar.xz
+	cd patch-2.7.6
+	./configure --prefix=/tools
+	make
+	make check
+	make install
 	cd ../
-	rm -fr 
+	rm -fr patch-2.7.6
 	
  2.3.22 Perl-5.30.1
  
- 	tar xf 
-	cd 
-	
+ 	tar xf perl-5.30.1.tar.xz
+	cd perl-5.30.1
+	sh Configure -des -Dprefix=/tools -Dlibs=-lm -Uloclibpth -Ulocincpth
+	make
+	cp -v perl cpan/podlators/scripts/pod2man /tools/bin
+	mkdir -pv /tools/lib/perl5/5.30.1
+	cp -Rv lib/* /tools/lib/perl5/5.30.1
 	cd ../
-	rm -fr 
+	rm -fr perl-5.30.1
 	
  2.3.23 Python-3.8.1
  
- 	tar xf 
-	cd 
-	
+ 	tar xf python-3.8.1-docs-html.tar.bz2
+	cd python-3.8.1
+	sed -i '/def add_multiarch_paths/a \        return' setup.py
+	./configure --prefix=/tools --without-ensurepip
+	make
+	make install
 	cd ../
-	rm -fr 
+	rm -fr python-3.8.1
 	
  2.3.24 Sed-4.8
  
- 	tar xf 
-	cd 
-	
+ 	tar xf sed-4.8.tar.xz
+	cd sed-4.8
+	./configure --prefix=/tools
+	make
+	make check
+	make install
 	cd ../
-	rm -fr 
+	rm -fr sed-4.8
 	
  2.3.25 Tar-1.32
  
- 	tar xf 
-	cd 
-	
+ 	tar xf tar-1.32.tar.xz
+	cd tar-1.32
+	./configure --prefix=/tools
+	make
+	make check
+	make install
 	cd ../
-	rm -fr 
+	rm -fr tar-1.32
 	
  2.3.26 Texinfo-6.7
  
- 	tar xf 
-	cd 
-	
+ 	tar xf texinfo-6.7.tar.xz
+	cd texinfo-6.7
+	./configure --prefix=/tools
+	make
+	make check
+	make install
 	cd ../
-	rm -fr 
+	rm -fr texinfo-6.7
 	
  2.3.27 Xz-5.2.4
  
- 	tar xf 
-	cd 
-	
+ 	tar xf xz-5.2.4.tar.xz
+	cd xz-5.2.4
+	./configure --prefix=/tools
+	make
+	make check
+	make install
 	cd ../
-	rm -fr 
+	rm -fr xz-5.2.4
 
