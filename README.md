@@ -789,14 +789,14 @@ For recreate the scenary is completly mandatory, follow (sequencially) the next 
 	
  2.3.23 Python-3.8.1
  
- 	tar xf python-3.8.1-docs-html.tar.bz2
-	cd python-3.8.1
+ 	tar xf Python-3.8.1.tar.xz
+	cd Python-3.8.1
 	sed -i '/def add_multiarch_paths/a \        return' setup.py
 	./configure --prefix=/tools --without-ensurepip
 	make
 	make install
 	cd ../
-	rm -fr python-3.8.1
+	rm -fr Python-3.8.1
 	
  2.3.24 Sed-4.8
  
