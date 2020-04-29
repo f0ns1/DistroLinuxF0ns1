@@ -842,3 +842,38 @@ For recreate the scenary is completly mandatory, follow (sequencially) the next 
 	cd ../
 	rm -fr xz-5.2.4
 
+
+# 2.4 Stripping
+
+	strip --strip-debug /tools/lib/*
+	/usr/bin/strip --strip-unneeded /tools/{,s}bin/*
+	rm -rf /tools/{,share}/{info,man,doc}
+	find /tools/{lib,libexec} -name \*.la -delete
+
+change permissions to root
+
+	chown -R root:root $LFS/tools
+
+# 3.0 Installing Basic System Software 
+
+
+	mkdir -pv $LFS/{dev,proc,sys,run}
+
+# 3.1 Creating Initial Device Nodes 
+	
+	mknod -m 600 $LFS/dev/console c 5 1
+	mknod -m 666 $LFS/dev/null c 1 3
+
+# 3.2 Mounting and Populating /dev 
+	
+	mount -v --bind /dev $LFS/dev
+
+# 3.3 Mounting Virtual Kernel File Systems 
+
+	mount -vt devpts devpts $LFS/dev/pts -o gid=5,mode=620
+	mount -vt proc proc $LFS/proc
+	mount -vt sysfs sysfs $LFS/sys
+	mount -vt tmpfs tmpfs $LFS/run
+	if [ -h $LFS/dev/shm ]; then
+  		mkdir -pv $LFS/$(readlink $LFS/dev/shm)
+	fi
