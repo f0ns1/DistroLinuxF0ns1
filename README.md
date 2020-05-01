@@ -942,9 +942,63 @@ output execution script:
 	root@debian-f0ns1:/mnt/lfs# 
 
 
+## 4.2 Create OS directories on new FileSystem
+
+	mkdir -pv /{bin,boot,etc/{opt,sysconfig},home,lib/firmware,mnt,opt}
+	mkdir -pv /{media/{floppy,cdrom},sbin,srv,var}
+	install -dv -m 0750 /root
+	install -dv -m 1777 /tmp /var/tmp
+	mkdir -pv /usr/{,local/}{bin,include,lib,sbin,src}
+	mkdir -pv /usr/{,local/}share/{color,dict,doc,info,locale,man}
+	mkdir -v  /usr/{,local/}share/{misc,terminfo,zoneinfo}
+	mkdir -v  /usr/libexec
+	mkdir -pv /usr/{,local/}share/man/man{1..8}
+	mkdir -v  /usr/lib/pkgconfig
+
+	case $(uname -m) in
+	 x86_64) mkdir -v /lib64 ;;
+	esac
+
+	mkdir -v /var/{log,mail,spool}
+	ln -sv /run /var/run
+	ln -sv /run/lock /var/lock
+	mkdir -pv /var/{opt,cache,lib/{color,misc,locate},local}
 
 
-	
+Tree directories:
+
+	I have no name!@debian-f0ns1:/# ls -ltrh /
+	total 120K
+	drwx------   2 root root  16K Apr 24 15:33 lost+found
+	drwxrwxr-x   2 root root 4.0K Apr 25 22:07 opt
+	drwxrwxr-x   2 root root 4.0K Apr 25 22:07 mnt
+	drwxrwxr-x   2 root root 4.0K Apr 25 22:07 srv
+	drwxrwxr-x   4 root root 4.0K Apr 25 22:07 media
+	drwxrwxr-x  10 root root 4.0K Apr 25 22:09 var
+	-rwxrwxr-x   1 root root  239 Apr 25 23:08 chroot_lfs.sh
+	-rw-rw-r--   1 root root  111 Apr 25 23:10 ifconfig.eth0
+	drwxrwxr-x   3 root root 4.0K Apr 25 23:47 boot
+	drwxrwxr-x 128 root root 4.0K Apr 25 23:58 etc
+	drwxrwxrwt   2 root root 4.0K Apr 26 02:07 tmp
+	drwxr-xr-x   5 root root 4.0K Apr 26 12:03 home
+	-rw-r--r--   1 root root   13 Apr 26 13:37 dummy.c
+	-rw-rw-r--   1 root root  152 Apr 26 18:24 test.c
+	-rwxr-xr-x   1 root root  20K Apr 26 18:25 a.out
+	dr-xr-xr-x 177 root root    0 May  1 17:56 proc
+	drwxr-xr-x  17 root root 3.3K May  1 17:56 dev
+	drwxr-xr-x  12 root root 4.0K May  1 18:18 tools
+	dr-xr-xr-x  13 root root    0 May  1 18:23 sys
+	drwxr-xr-x   2 root root 4.0K May  1 18:35 bin
+	drwxr-xr-x   2 root root 4.0K May  1 19:41 lib64
+	-rwxr-xr-x   1 root root  264 May  1 20:02 chroot_init.sh
+	drwxr-xr-x   3 root root 4.0K May  1 20:07 lib
+	drwxr-xr-x   2 root root 4.0K May  1 20:09 sbin
+	drwxr-x---   2 root root 4.0K May  1 20:09 root
+	drwxr-xr-x  10 root root 4.0K May  1 20:09 usr
+	drwxrwxrwt   2 root root   60 May  1 20:09 run
+
+
+
 
 	
 	
