@@ -877,3 +877,74 @@ change permissions to root
 	if [ -h $LFS/dev/shm ]; then
   		mkdir -pv $LFS/$(readlink $LFS/dev/shm)
 	fi
+
+
+
+## 4.0 chroot environment: (Change root directory from / to /mnt/lfs )
+
+solving configuration problems
+
+	root@debian-f0ns1:/mnt/lfs# ldd /mnt/lfs/bin/bash
+	linux-vdso.so.1 (0x00007fff58917000)
+	libtinfo.so.6 => /lib/x86_64-linux-gnu/libtinfo.so.6 (0x00007fbb0fe20000)
+	libdl.so.2 => /lib/x86_64-linux-gnu/libdl.so.2 (0x00007fbb0fe1b000)
+	libc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007fbb0fc5a000)
+	/lib64/ld-linux-x86-64.so.2 (0x00007fbb0ff95000)
+
+In order to solve linked libraries error, we include the next directories on our new root folder /mnt/lfs
+	
+	ls -r usr
+	lib
+	root@debian-f0ns1:/mnt/lfs# ls -R usr
+	usr:
+	lib
+
+	usr/lib:
+	x86_64-linux-gnu
+
+	usr/lib/x86_64-linux-gnu:
+	libc.so.6  libdl.so.2  libtinfo.so.6
+	
+	root@debian-f0ns1:/mnt/lfs# ls -R lib64
+	lib64:
+	ld-linux-x86-64.so.2
+
+
+## 4.1 Change directory
+
+For change directory, we use the follow script:
+
+	root@debian-f0ns1:/mnt/lfs# cat chroot_init.sh 
+	#!/bin/bash
+
+	echo "LFS home = $LFS "
+	/mnt/lfs/tools/binch/root /mnt/lfs/ /tools/bin/env -i \    
+		HOME=/root                      \
+		TERM="$TERM"                    \
+		PS1='(lfs chroot) \u:\w\$ '     \
+		PATH=/bin:/usr/bin:/sbin:/usr/sbin:/tools/bin  \   
+		/tools/bin/bash --login +h
+
+	echo "End chroot..."
+
+
+output execution script:
+
+	root@debian-f0ns1:/mnt/lfs# chmod +x chroot_init.sh 
+	root@debian-f0ns1:/mnt/lfs# ./chroot_init.sh 
+	LFS home = /mnt/lfs 
+	I have no name!@debian-f0ns1:/# 
+	I have no name!@debian-f0ns1:/# pwd
+	/
+	I have no name!@debian-f0ns1:/# exit
+	logout
+	End chroot...
+	root@debian-f0ns1:/mnt/lfs# 
+
+
+
+
+	
+
+	
+	
