@@ -918,10 +918,10 @@ For change directory, we use the follow script:
 	#!/bin/bash
 
 	echo "LFS home = $LFS "
-	/mnt/lfs/tools/binch/root /mnt/lfs/ /tools/bin/env -i \    
+	/mnt/lfs/tools/bin/chroot /mnt/lfs/ /tools/bin/env -i \    
 		HOME=/root                      \
 		TERM="$TERM"                    \
-		PS1='(lfs chroot) \u:\w\$ '     \
+		PS1='`whoami` \u:\w\$ '     \
 		PATH=/bin:/usr/bin:/sbin:/usr/sbin:/tools/bin  \   
 		/tools/bin/bash --login +h
 
@@ -1063,3 +1063,19 @@ I have no name! : solved
 	exec /tools/bin/bash --login +h
 	[now /tools/bin/bash forun /etc/groups and /etc/passwd file]
 	
+
+## 4.4 Installing Basic System Software  (Chroot)
+
+
+4.4.1 Linux-5.5.3 API Headers
+
+	root:/home/sources# tar xf linux-5.5.3.tar.xz 
+	root:/home/sources# cd linux-5.5.3
+	make mrproper
+	make headers
+	find usr/include -name '.*' -delete
+	rm usr/include/Makefile
+	cp -rv usr/include/* /usr/include
+	cd ../
+	rm -fr linux-5.5.3
+
