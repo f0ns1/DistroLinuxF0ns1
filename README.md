@@ -1088,7 +1088,8 @@ I have no name! : solved
 	rm -fr man-pages-5.05
 
 4.4.3 GLIBC 2.31 
-##One or most important points: verify that this installation and configuration finish like example output
+
+One or most important points: verify that this installation and configuration finish like example output
 
 	tar xf glibc-2.31.tar.xz 
 	cd glibc-2.31
@@ -1266,7 +1267,7 @@ Output :
 
 ## 4.4  Adjusting the Toolchain 
 
-## Important point too, yout must verify and compare your output with teh example
+Important point too, yout must verify and compare your output with the example
 
 	basckup and new link
 	
