@@ -1354,6 +1354,43 @@ Important point too, yout must verify and compare your output with the example
 	   in the bzip2 source distribution.
 
 	   This program is distributed in the hope that it will be useful,
-	   but WITHOUT ANY WARRANTY; without even the implied warranty of
+	   but WITHOUT ANY
+	   
+	   WARRANTY; without even the implied warranty of
 	   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 	   LICENSE file for more details.
+
+
+## 4.7 xz-5.2.4 install
+	
+	tar xf xz-5.2.4.tar.xz
+	cd xz-5.2.4
+	./configure --prefix=/usr    \
+            --disable-static \
+            --docdir=/usr/share/doc/xz-5.2.4
+	make
+	make check
+	make install
+	mv -v   /usr/bin/{lzma,unlzma,lzcat,xz,unxz,xzcat} /bin
+	mv -v /usr/lib/liblzma.so.* /lib
+	ln -svf ../../lib/$(readlink /usr/lib/liblzma.so) /usr/lib/liblzma.so
+	cd ../
+	rm -fr xz-5.2.4
+	
+
+## 4.8 Installation of File 
+
+	tar xf file-5.38.tar.gz
+	cd file-5.38
+	./configure --prefix=/usr
+	make
+	make check
+	make install
+	cd ../
+	rm -fr file-5.38
+	
+## 4.9 Readline-8.0 
+
+	tar xf readline-8.0.tar.gz
+	cd readline-8.0
+	
