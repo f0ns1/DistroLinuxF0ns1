@@ -1087,7 +1087,8 @@ I have no name! : solved
 	cd ../
 	rm -fr man-pages-5.05
 
-4.4.3 GLIBC....
+4.4.3 GLIBC 2.31 
+##One or most important points: verify that this installation and configuration finish like example output
 
 	tar xf glibc-2.31.tar.xz 
 	cd glibc-2.31
@@ -1147,3 +1148,211 @@ I have no name! : solved
 	localedef -i zh_CN -f GB18030 zh_CN.GB18030
 	localedef -i zh_HK -f BIG5-HKSCS zh_HK.BIG5-HKSCS
 	make localedata/install-locales
+	
+## 4.3.1 Configuring Glibc 
+
+
+4.3.1.1 Adding nsswitch.conf 
+
+	cat > /etc/nsswitch.conf << "EOF"
+	# Begin /etc/nsswitch.conf
+
+	passwd: files
+	group: files
+	shadow: files
+
+	hosts: files dns
+	networks: files
+
+	protocols: files
+	services: files
+	ethers: files
+	rpc: files
+
+	# End /etc/nsswitch.conf
+	EOF
+
+4.3.1.2 Adding time zone data 
+
+	tar -xf ../../tzdata2019c.tar.gz
+
+	ZONEINFO=/usr/share/zoneinfo
+	mkdir -pv $ZONEINFO/{posix,right}
+
+	for tz in etcetera southamerica northamerica europe africa antarctica  \
+		  asia australasia backward pacificnew systemv; do
+	    zic -L /dev/null   -d $ZONEINFO       ${tz}
+	    zic -L /dev/null   -d $ZONEINFO/posix ${tz}
+	    zic -L leapseconds -d $ZONEINFO/right ${tz}
+	done
+
+	cp -v zone.tab zone1970.tab iso3166.tab $ZONEINFO
+	zic -d $ZONEINFO -p America/New_York
+	unset ZONEINFO
+	
+
+	tzselect
+	
+Output :
+
+	Please identify a location so that time zone rules can be set correctly.
+	Please select a continent, ocean, "coord", or "TZ".
+	1) Africa							     7) Europe
+	2) Americas							     8) Indian Ocean
+	3) Antarctica							     9) Pacific Ocean
+	4) Asia								    10) coord - I want to use geographical coordinates.
+	5) Atlantic Ocean						    11) TZ - I want to specify the timezone using the Posix TZ format.
+	6) Australia
+	#? 7
+	Please select a country whose clocks agree with yours.
+	 1) ?land Islands	  11) Czech Republic	    21) Ireland		      31) Monaco		41) Serbia
+	 2) Albania		  12) Denmark		    22) Isle of Man	      32) Montenegro		42) Slovakia
+	 3) Andorra		  13) Estonia		    23) Italy		      33) Netherlands		43) Slovenia
+	 4) Austria		  14) Finland		    24) Jersey		      34) North Macedonia	44) Spain
+	 5) Belarus		  15) France		    25) Latvia		      35) Norway		45) Svalbard & Jan Mayen
+	 6) Belgium		  16) Germany		    26) Liechtenstein	      36) Poland		46) Sweden
+	 7) Bosnia & Herzegovina  17) Gibraltar		    27) Lithuania	      37) Portugal		47) Switzerland
+	 8) Britain (UK)	  18) Greece		    28) Luxembourg	      38) Romania		48) Turkey
+	 9) Bulgaria		  19) Guernsey		    29) Malta		      39) Russia		49) Ukraine
+	10) Croatia		  20) Hungary		    30) Moldova		      40) San Marino		50) Vatican City
+	#? 44
+	Please select one of the following timezones.
+	1) Spain (mainland)
+	2) Ceuta, Melilla
+	3) Canary Islands
+	#? 1
+
+	The following information has been given:
+
+		Spain
+		Spain (mainland)
+
+	Therefore TZ='Europe/Madrid' will be used.
+	Selected time is now:	Sun May  3 19:16:50 CEST 2020.
+	Universal Time is now:	Sun May  3 17:16:50 UTC 2020.
+	Is the above information OK?
+	1) Yes
+	2) No
+	#? 1
+
+	You can make this change permanent for yourself by appending the line
+		TZ='Europe/Madrid'; export TZ
+	to the file '.profile' in your home directory; then log out and log in again.
+
+	Here is that TZ value again, this time on standard output so that you
+	can use the /usr/bin/tzselect command in shell scripts:
+	Europe/Madrid
+
+	
+	ln -sfv /usr/share/zoneinfo/Europe/Madrid /etc/localtime
+	'/etc/localtime' -> '/usr/share/zoneinfo/Europe/Madrid'
+
+	
+4.3.1.3 Configuring the Dynamic Loader 
+
+	cat > /etc/ld.so.conf << "EOF"
+	# Begin /etc/ld.so.conf
+	/usr/local/lib
+	/opt/lib
+
+	EOF
+	
+	cat >> /etc/ld.so.conf << "EOF"
+	# Add an include directory
+	include /etc/ld.so.conf.d/*.conf
+
+	EOF
+	mkdir -pv /etc/ld.so.conf.d
+
+## 4.4  Adjusting the Toolchain 
+
+## Important point too, yout must verify and compare your output with teh example
+
+	basckup and new link
+	
+	mv -v /tools/bin/{ld,ld-old}
+	mv -v /tools/$(uname -m)-pc-linux-gnu/bin/{ld,ld-old}
+	mv -v /tools/bin/{ld-new,ld}
+	ln -sv /tools/bin/ld /tools/$(uname -m)-pc-linux-gnu/bin/ld
+
+	gcc -dumpspecs | sed -e 's@/tools@@g'                   \
+	-e '/\*startfile_prefix_spec:/{n;s@.*@/usr/lib/ @}' \
+	-e '/\*cpp:/{n;s@$@ -isystem /usr/include@}' >      \
+	`dirname $(gcc --print-libgcc-file-name)`/specs
+	  
+4.4.1  Verify Adjusting the Toolchain 
+
+
+	root :/home/sources/glibc-2.31/build# echo 'int main(){}' > dummy.c
+	root :/home/sources/glibc-2.31/build# cc dummy.c -v -Wl,--verbose &> dummy.log
+	root :/home/sources/glibc-2.31/build# readelf -l a.out | grep ': /lib'
+	      [Requesting program interpreter: /lib64/ld-linux-x86-64.so.2]
+	root :/home/sources/glibc-2.31/build# grep -o '/usr/lib.*/crt[1in].*succeeded' dummy.log
+	/usr/lib/../lib/crt1.o succeeded
+	/usr/lib/../lib/crti.o succeeded
+	/usr/lib/../lib/crtn.o succeeded
+	root :/home/sources/glibc-2.31/build# grep -B1 '^ /usr/include' dummy.log
+	#include <...> search starts here:
+	 /usr/include
+	root :/home/sources/glibc-2.31/build# grep 'SEARCH.*/usr/lib' dummy.log |sed 's|; |\n|g'
+	SEARCH_DIR("=/tools/x86_64-pc-linux-gnu/lib64")
+	SEARCH_DIR("/usr/lib")
+	SEARCH_DIR("/lib")
+	SEARCH_DIR("=/tools/x86_64-pc-linux-gnu/lib");
+	root :/home/sources/glibc-2.31/build# grep "/lib.*/libc.so.6 " dummy.log
+	attempt to open /lib/libc.so.6 succeeded
+	root :/home/sources/glibc-2.31/build# grep found dummy.log
+	found ld-linux-x86-64.so.2 at /lib/ld-linux-x86-64.so.2
+	root :/home/sources/glibc-2.31/build# rm -v dummy.c a.out dummy.log
+	removed 'dummy.c'
+	removed 'a.out'
+	removed 'dummy.log'
+
+	cd ../../
+	rm -fr glibc-2.31
+
+## 4.5 zlib-1.2.11 install
+
+	tar xf zlib-1.2.11
+	cd zlib-1.2.11
+	./configure --prefix=/usr
+	make
+	make check
+	make install
+	mv -v /usr/lib/libz.so.* /lib
+	ln -sfv ../../lib/$(readlink /usr/lib/libz.so) /usr/lib/libz.so
+	cd ../
+	rm -fr zlib-1.2.11
+
+## 4.6 Bzip2-1.0.8 install
+
+	tar xf bzip2-1.0.8.tar.gz
+	cd bzip2-1.0.8
+	patch -Np1 -i ../bzip2-1.0.8-install_docs-1.patch
+	sed -i 's@\(ln -s -f \)$(PREFIX)/bin/@\1@' Makefile
+	sed -i "s@(PREFIX)/man@(PREFIX)/share/man@g" Makefile
+	make -f Makefile-libbz2_so
+	make clean
+	make
+	make PREFIX=/usr install
+	cp -v bzip2-shared /bin/bzip2
+	cp -av libbz2.so* /lib
+	ln -sv ../../lib/libbz2.so.1.0 /usr/lib/libbz2.so
+	rm -v /usr/bin/{bunzip2,bzcat,bzip2}
+	ln -sv bzip2 /bin/bunzip2
+	ln -sv bzip2 /bin/bzcat
+	cd ../
+	
+	bzip2 --version
+	bzip2, a block-sorting file compressor.  Version 1.0.8, 13-Jul-2019.
+
+	   Copyright (C) 1996-2019 by Julian Seward.
+
+	   This program is free software; you can redistribute it and/or modify
+	   it under the terms set out in the LICENSE file, which is included
+	   in the bzip2 source distribution.
+
+	   This program is distributed in the hope that it will be useful,
+	   but WITHOUT ANY WARRANTY; without even the implied warranty of
+	   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	   LICENSE file for more details.
