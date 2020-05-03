@@ -1408,4 +1408,44 @@ Important point too, yout must verify and compare your output with the example
 	cd ../
 	rm -fr readline-8.0
 
+## 4.10 M4-1.4.18
+	
+	tar xf m4-1.4.18.tar.xz
+	cd m4-1.4.18
+	sed -i 's/IO_ftrylockfile/IO_EOF_SEEN/' lib/*.c
+	echo "#define _IO_IN_BACKUP 0x100" >> lib/stdio-impl.h
+	./configure --prefix=/usr
+	make
+	make check
+	make install
+	cd ../
+	rm -fr m4-1.4.18
+
+## 4.11 Bc-2.5.3 
+	
+	tar xf bc-2.5.3.tar.gz
+	cd bc-2.5.3
+	PREFIX=/usr CC=gcc CFLAGS="-std=c99" ./configure.sh -G -O3
+	make
+	make test
+	make install
+	cd ../
+	rm -fr bc-2.5.3
+
+## 4.12 Binutils-2.34 
+
+	tar xf binutils-2.34.tar.xz
+	cd binutils-2.34
+	sed -i '/@\tincremental_copy/d' gold/testsuite/Makefile.in
+	mkdir -v build
+	cd       build
+	../configure --prefix=/usr       \
+		     --enable-gold       \
+		     --enable-ld=default \
+		     --enable-plugins    \
+		     --enable-shared     \
+		     --disable-werror    \
+		     --enable-64-bit-bfd \
+		     --with-system-zlib
+	make tooldir=/usr
 	
