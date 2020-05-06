@@ -1449,3 +1449,112 @@ Important point too, yout must verify and compare your output with the example
 		     --with-system-zlib
 	make tooldir=/usr
 	
+## 4.13 GMP-6.2.0
+
+	tar xf gmp-6.2.0.tar.xz
+	cd gmp-6.2.0
+	./configure --prefix=/usr    \
+            --enable-cxx     \
+            --disable-static \
+            --docdir=/usr/share/doc/gmp-6.2.0
+	make
+	make html
+	make check 2>&1 | tee gmp-check-log
+	awk '/# PASS:/{total+=$3} ; END{print total}' gmp-check-log //PASS=197
+	make install
+	make install-html
+	cd ../
+	rm -fr gmp-6.2.0
+	
+## 4.14 MPFR-4.0.2 
+
+	tar xf mpfr-4.0.2.tar.xz
+	cd mpfr-4.0.2
+	./configure --prefix=/usr        \
+            --disable-static     \
+            --enable-thread-safe \
+            --docdir=/usr/share/doc/mpfr-4.0.2
+	make
+	make html
+	make check 
+	
+	============================================================================
+	Testsuite summary for MPFR 4.0.2
+	============================================================================
+	# TOTAL: 180
+	# PASS:  180
+	# SKIP:  0
+	# XFAIL: 0
+	# FAIL:  0
+	# XPASS: 0
+	# ERROR: 0
+	============================================================================
+
+	make install
+	make install-html
+	
+## 4.15 MPC-1.1.0
+
+	tar xf mpc-1.1.0.tar.gz 
+	cd mpc-1.1.0
+	./configure --prefix=/usr    \
+            --disable-static \
+            --docdir=/usr/share/doc/mpc-1.1.0
+	 make
+	make html
+	make check
+	make install
+	make install-html
+	cd ../
+	rm -fr mpc-1.1.0
+
+## 4.16 Attr-2.4.48 
+
+	tar xf attr-2.4.48.tar.gz
+	cd attr-2.4.48
+	./configure --prefix=/usr     \
+            --bindir=/bin     \
+            --disable-static  \
+            --sysconfdir=/etc \
+            --docdir=/usr/share/doc/attr-2.4.48
+	make
+	make check
+	make install
+	mv -v /usr/lib/libattr.so.* /lib
+	ln -sfv ../../lib/$(readlink /usr/lib/libattr.so) /usr/lib/libattr.so
+	cd ..
+	rm -fr attr-2.4.48
+
+## 4.17 Acl-2.2.53
+	
+	tar xf acl-2.2.53.tar.gz
+	cd acl-2.2.53
+	./configure --prefix=/usr         \
+            --bindir=/bin         \
+            --disable-static      \
+            --libexecdir=/usr/lib \
+            --docdir=/usr/share/doc/acl-2.2.53
+	make
+	make install
+	mv -v /usr/lib/libacl.so.* /lib
+	ln -sfv ../../lib/$(readlink /usr/lib/libacl.so) /usr/lib/libacl.so
+	cd ..
+	rm -fr acl-2.2.53
+
+## 4.18 Shadow-4.8.1
+
+	tar xf 
+	cd
+	sed -i 's/groups$(EXEEXT) //' src/Makefile.in
+	find man -name Makefile.in -exec sed -i 's/groups\.1 / /'   {} \;
+	find man -name Makefile.in -exec sed -i 's/getspnam\.3 / /' {} \;
+	find man -name Makefile.in -exec sed -i 's/passwd\.5 / /'   {} \;
+	sed -i -e 's@#ENCRYPT_METHOD DES@ENCRYPT_METHOD SHA512@' \
+	       -e 's@/var/spool/mail@/var/mail@' etc/login.defs
+	sed -i 's@DICTPATH.*@DICTPATH\t/lib/cracklib/pw_dict@' etc/login.defs
+	sed -i 's/1000/999/' etc/useradd
+	./configure --sysconfdir=/etc --with-group-name-max-length=32
+	make
+	make install
+
+4.18.1 Configuring Shadow 
