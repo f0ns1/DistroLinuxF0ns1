@@ -1543,8 +1543,8 @@ Important point too, yout must verify and compare your output with the example
 
 ## 4.18 Shadow-4.8.1
 
-	tar xf 
-	cd
+	tar xf shadow-4.8.1.tar.xz
+	cd shadow-4.8.1
 	sed -i 's/groups$(EXEEXT) //' src/Makefile.in
 	find man -name Makefile.in -exec sed -i 's/groups\.1 / /'   {} \;
 	find man -name Makefile.in -exec sed -i 's/getspnam\.3 / /' {} \;
@@ -1556,6 +1556,8 @@ Important point too, yout must verify and compare your output with the example
 	./configure --sysconfdir=/etc --with-group-name-max-length=32
 	make
 	make install
+	cd ../
+	rm -fr shadow-4.8.1
 
 4.18.1 Configuring Shadow 
 
@@ -1582,3 +1584,28 @@ Important point too, yout must verify and compare your output with the example
 	root@debian-f0ns1:~# 
 
 
+## 4.19  GCC-9.2.0
+	
+	tar xf gcc-9.2.0.tar.xz
+	cd gcc-9.2.0
+	case $(uname -m) in
+	  x86_64)
+	    sed -e '/m64=/s/lib64/lib/' \
+		-i.orig gcc/config/i386/t-linux64
+	  ;;
+	esac
+	sed -e '1161 s|^|//|' \
+    -i libsanitizer/sanitizer_common/sanitizer_platform_limits_posix.cc
+    	mkdir -v build
+	cd       build
+	SED=sed                               \
+	../configure --prefix=/usr            \
+             --enable-languages=c,c++ \
+             --disable-multilib       \
+             --disable-bootstrap      \
+             --with-system-zlib
+	make
+	ulimit -s 32768
+	//test
+	chown -Rv nobody . 
+	su nobody -s /bin/bash -c "PATH=$PATH make -k check"
