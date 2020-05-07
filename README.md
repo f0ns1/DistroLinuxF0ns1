@@ -1608,4 +1608,4 @@ Important point too, yout must verify and compare your output with the example
 	ulimit -s 32768
 	//test
 	chown -Rv nobody . 
-	su nobody -s /bin/bash -c "PATH=$PATH make -k check"
+	su nobody -s /bin/bash -c "PATH=$PATH make -k check"fin
