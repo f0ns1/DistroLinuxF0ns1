@@ -1558,3 +1558,27 @@ Important point too, yout must verify and compare your output with the example
 	make install
 
 4.18.1 Configuring Shadow 
+
+	pwconv
+	grpconv
+	sed -i 's/yes/no/' /etc/default/useradd
+	
+	cat /etc/default/useradd 
+	# useradd defaults file
+	GROUP=999
+	HOME=/home
+	INACTIVE=-1
+	EXPIRE=
+	SHELL=/bin/bash
+	SKEL=/etc/skel
+	CREATE_MAIL_SPOOL=no
+
+	echo "root:root" |chpasswd // add root password
+	
+	cat /etc/shadow | grep root
+	root:$6$5zhpIWyag5G4qmT$YJUUOKu/l0jr7h1GeyArp69DH.JzRbeescODhXrCSEsD0Y8IolUiIvUzErZW5/iJBUOwX.zEdfxjabejklMKX.:18389:0:99999:7:::
+
+	(lfs chroot) root:/home/sources/shadow-4.8.1# su - root
+	root@debian-f0ns1:~# 
+
+
